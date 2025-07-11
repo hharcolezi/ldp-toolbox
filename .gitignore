@@ -1,7 +1,7 @@
 build/
 dist/
 *.egg-info/
-.eggs/
+*.egg-info
 *.pyc
 *.pyo
 *.pyd
