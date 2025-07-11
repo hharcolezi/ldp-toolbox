@@ -1,0 +1,14 @@
+/* Tabs */
+.custom-tab {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.custom-tab--selected {
+    background-color: #e9ecef !important;
+    font-weight: bold;
+    color: #212529;
+    border-top: 3px solid #0d6efd;
+}

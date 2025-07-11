@@ -1,0 +1,10 @@
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.txt
+/src/usecases/
+/data/2022_stata/
+/data/iramshahzadi9/
+/data/UCI_HAR_Dataset/
+*.zip
