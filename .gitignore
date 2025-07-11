@@ -6,4 +6,4 @@ dist/
 *.pyo
 *.pyd
 *.zip
-*.json
+progress.json
