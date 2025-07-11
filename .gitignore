@@ -1,6 +1,8 @@
+build/
+dist/
+*.egg-info/
+.eggs/
 *.pyc
-__pycache__/
 *.pyo
 *.pyd
-*.txt
 *.zip
