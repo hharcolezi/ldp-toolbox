@@ -12,7 +12,7 @@ license = { file = "LICENSE" }
 authors = [
   { name = "Haoying Zhang" },
   { name = "Abhishek K. Mishra" },
-  { name = "Héber H. Arcolezi"" }
+  { name = "Héber H. Arcolezi" }
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
