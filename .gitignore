@@ -6,3 +6,4 @@ dist/
 *.pyo
 *.pyd
 *.zip
+*.json
