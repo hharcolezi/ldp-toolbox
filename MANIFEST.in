@@ -1,0 +1,7 @@
+include README.md LICENSE
+
+# Include all Python modules 
+recursive-include src/ldp_toolbox *.py
+
+# Include all frontend assets for the Dash app
+recursive-include src/ldp_toolbox/toolbox/assets *

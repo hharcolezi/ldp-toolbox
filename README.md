@@ -20,16 +20,33 @@ LDP Toolbox is available on PyPI. Install it with:
 pip install ldp-toolbox
 ```
 
-## ⚡ Quick Start
+## ⚡ Usage
 
-After installation, you can run the dashboard or use components in your own Python code.  
-For example:
+After installation, you can launch the dashboard in two ways:
+
+### ✅ Option 1 — Using the CLI (recommended)
+
+Run directly from the terminal:
+
+```bash
+ldp-toolbox
+```
+
+### ✅ Option 2 — Using Python module
+
+Alternatively, you can run it as a module:
+
+```bash
+python -m ldp_toolbox.toolbox.app
+```
+
+Or if you prefer, you can embed the app in your own code:
 
 ```python
 from ldp_toolbox.toolbox.app import app
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
 ```
 
 ## 📁 Project Structure
