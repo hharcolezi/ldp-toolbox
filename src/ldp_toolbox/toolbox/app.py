@@ -1,6 +1,6 @@
 import dash
 from dash import dcc, html
-from toolbox.pages import visualization, custom_upload
+from ldp_toolbox.toolbox.pages import visualization, custom_upload
 import flask
 import os
 

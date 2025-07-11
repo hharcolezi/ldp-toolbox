@@ -2,8 +2,7 @@ Metadata-Version: 2.4
 Name: ldp-toolbox
 Version: 0.1.0
 Summary: Local Differential Privacy Toolbox
-Author: Haoying Zhang, Abhishek K. Mishra
-Author-email: "Héber H. Arcolezi" <heber.hwang-arcolezi@inria.fr>
+Author: Haoying Zhang, Abhishek K. Mishra, Héber H. Arcolezi
 License: MIT License
         
         Copyright (c) 2025 Héber Hwang Arcolezi
@@ -34,14 +33,17 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: dash
-Requires-Dist: dash-bootstrap-components
-Requires-Dist: numpy
-Requires-Dist: scipy
-Requires-Dist: matplotlib
-Requires-Dist: numba
-Requires-Dist: ray
-Requires-Dist: xxhash
+Requires-Dist: dash>=2.18.2
+Requires-Dist: dash-bootstrap-components>=1.7.1
+Requires-Dist: numpy>=2.1.3
+Requires-Dist: scipy>=1.15.2
+Requires-Dist: matplotlib>=3.10.1
+Requires-Dist: numba>=0.61.0
+Requires-Dist: ray>=2.45.0
+Requires-Dist: xxhash>=3.5.0
+Requires-Dist: pandas>=2.3.0
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: joblib>=1.5.1
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: black; extra == "dev"
@@ -50,10 +52,10 @@ Dynamic: license-file
 
 ## Installation for development
 
-conda create --name ldp_selector python=3.11
-conda activate ldp_selector
+conda create --name ldp_toolbox python=3.11
+conda activate ldp_toolbox
 
-cd "path to ldp selector toolbox"
+cd "path to ldp toolbox"
 
 ```pip install -r requirements.txt```
 

@@ -8,11 +8,11 @@ import plotly.graph_objects as go
 import base64
 import io, json, os, re
 from tqdm import tqdm
-from toolbox.pages.utils import *
-from toolbox.pages.visualization import (
+from ldp_toolbox.toolbox.pages.utils import *
+from ldp_toolbox.toolbox.pages.visualization import (
     color_scales, symbol_map, conditional_format, protocol_map, ALL_PROTOCOLS
 )
-from toolbox.pages.style import p_style, p_titleStyle, p_textStyle, p_inputStyle, p_labelStyle, fontsize_text, fontsize_title
+from ldp_toolbox.toolbox.pages.style import p_style, p_titleStyle, p_textStyle, p_inputStyle, p_labelStyle, fontsize_text, fontsize_title
 # Example protocol imports
 from ldp_toolbox.protocols.frequency.grr import GeneralizedRandomizedResponse
 from ldp_toolbox.protocols.frequency.ue import UnaryEncoding

@@ -12,7 +12,7 @@ from ldp_toolbox.protocols.frequency.lh import LocalHashing
 from ldp_toolbox.protocols.frequency.he import HistogramEncoding
 from ldp_toolbox.protocols.frequency.ss import SubsetSelection
 
-from toolbox.pages.style import p_style, p_titleStyle, p_textStyle, p_inputStyle, p_labelStyle, fontsize_text, fontsize_title, p_labelStyle_inline
+from ldp_toolbox.toolbox.pages.style import p_style, p_titleStyle, p_textStyle, p_inputStyle, p_labelStyle, fontsize_text, fontsize_title, p_labelStyle_inline
 # --------------------------
 # 1) Color Scales & Markers
 # --------------------------
@@ -126,7 +126,7 @@ controls_card = dbc.Card([
         html.Br(),
 
         # Step input for epsilon
-        html.Label("ε Step:", style=p_textStyle),
+        html.Label("ε Step:", style={'marginRight': '10px', 'whiteSpace': 'nowrap', 'font-size': str(fontsize_text)+'px'}),
         dcc.Input(id='epsilon-step', type='number', value=0.5, step=0.1, min=0.1, style=p_textStyle),
 
         html.Br(), html.Br(),
