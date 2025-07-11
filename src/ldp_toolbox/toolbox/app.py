@@ -121,5 +121,8 @@ app.layout = html.Div([
 visualization.register_callbacks(app)
 custom_upload.register_callbacks(app)
 
+def main():
+    app.run(debug=True)
+
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    main()

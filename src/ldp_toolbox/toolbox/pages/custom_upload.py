@@ -13,12 +13,18 @@ from ldp_toolbox.toolbox.pages.visualization import (
     color_scales, symbol_map, conditional_format, protocol_map, ALL_PROTOCOLS
 )
 from ldp_toolbox.toolbox.pages.style import p_style, p_titleStyle, p_textStyle, p_inputStyle, p_labelStyle, fontsize_text, fontsize_title
-# Example protocol imports
+
+# Protocol imports
 from ldp_toolbox.protocols.frequency.grr import GeneralizedRandomizedResponse
 from ldp_toolbox.protocols.frequency.ue import UnaryEncoding
 from ldp_toolbox.protocols.frequency.lh import LocalHashing
 from ldp_toolbox.protocols.frequency.he import HistogramEncoding
 from ldp_toolbox.protocols.frequency.ss import SubsetSelection
+
+import tempfile
+
+# Safe progress file
+progress_file = os.path.join(tempfile.gettempdir(), "ldp_toolbox_progress.json")
 
 # -------------------------- #
 # Global map for metric functions
@@ -389,7 +395,7 @@ def register_callbacks(app):
 
         # Otherwise: interval triggered → update progress bars
         try:
-            with open("progress.json") as f:
+            with open(progress_file) as f:
                 progress_dict = json.load(f)
         except Exception:
             progress_dict = {}
@@ -454,7 +460,7 @@ def register_callbacks(app):
             return stats_text, None, options, "", protocols, None, "MSE", "medium"
         else:
             # Empty the progress bar
-            with open("progress.json", "w") as f:
+            with open(progress_file, "w") as f:
                 json.dump({prot: 0 for prot in protocols}, f)
 
             df_sampled = df.sample(n=sample_size, replace=False)
@@ -521,7 +527,7 @@ def register_callbacks(app):
                     distribution.append(noisy_distribution_reverse)
 
                     progress_dict[prot]+=step
-                    with open("progress.json", "w") as f:
+                    with open(progress_file, "w") as f:
                         json.dump(progress_dict, f)
 
                 results[prot] = {
