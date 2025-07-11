@@ -55,5 +55,5 @@ LDP-Toolbox is a work in progress, and we expect to release new versions frequen
 - [Héber H. Arcolezi](https://hharcolezi.github.io/): heber.hwang-arcolezi [at] inria [dot] fr
 
 
-## License
+## 📝 License
 This project is licensed under the [MIT License](https://github.com/hharcolezi/ldp-toolbox/blob/main/LICENSE).
