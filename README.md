@@ -57,6 +57,10 @@ if __name__ == "__main__":
 
 Example datasets (`data/`) are provided in this repository for demonstration and local testing, but are not shipped with the PyPI package.
 
+### 🎥 Demonstration video
+
+A recorded demonstration video is available at: [Demo](https://youtu.be/q4IappEkUGk)
+
 ## 🤝 Contributing
 LDP-Toolbox is a work in progress, and we expect to release new versions frequently, incorporating feedback and code contributions from the community.
 
