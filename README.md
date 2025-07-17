@@ -59,7 +59,7 @@ Example datasets (`data/`) are provided in this repository for demonstration and
 
 ### 🎥 Demonstration video
 
-A recorded demonstration video is available at: [Demo](https://youtu.be/q4IappEkUGk)
+A recorded demonstration video is available at: [Demo](https://youtu.be/LC2NreobdzI)
 
 ## 🤝 Contributing
 LDP-Toolbox is a work in progress, and we expect to release new versions frequently, incorporating feedback and code contributions from the community.
