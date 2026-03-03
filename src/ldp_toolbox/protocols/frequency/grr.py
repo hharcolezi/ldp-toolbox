@@ -3,6 +3,45 @@ from numba import jit
 from ldp_toolbox.protocols.base import BaseProtocol
 
 @jit(nopython=True)
+def compute_mga(user_reports: list, T: set, m: int, p: float, q: float) -> float:
+    """
+    Compute the gain of the Maximal Gain Attack (MGA) on GRR (k-RR) (Table 1, col. 1).
+
+    G = m * ((1 - r * q) - fT * (p - q)) / ((n + m) * (p - q))
+
+    Derived from G = m / ((n + m) * (p - q)) - c, where:
+        c = m * (fT * (p - q) + r * q) / ((n + m) * (p - q))
+
+    Unlike OUE/OLH, GRR users report a single value, so the first term has m
+    (not r * m). fT is the sum of true frequencies of all items in T.
+
+    Based on: Cao et al., "Data Poisoning Attacks to Local Differential
+    Privacy Protocols", USENIX Security 2021, Table 1.
+
+    Parameters
+    ----------
+    user_reports : list of int
+        True (non-obfuscated) values reported by genuine users.
+    T : set
+        Set of target item indices to promote.
+    m : int
+        Number of fake users injected by the attacker.
+    p : float
+        Probability of reporting the true value (GRR parameter).
+    q : float
+        Probability of reporting any other value; equals (1-p)/(k-1) (GRR parameter).
+
+    Returns
+    -------
+    float
+        The expected gain in estimated frequency for the target items.
+    """
+    n = len(user_reports)
+    r = len(T)
+    fT = sum(1 for v in user_reports if v in T) / n
+    return m * ((1 - r * q) - fT * (p - q)) / ((n + m) * (p - q))
+
+@jit(nopython=True)
 def grr_obfuscate(input_data: int, k: int, p: float) -> int:
     """
     Obfuscate the input data using the Generalized Randomized Response (GRR) mechanism.
@@ -167,6 +206,28 @@ class GeneralizedRandomizedResponse(BaseProtocol):
             The MSE of the GRR mechanism.
         """
         return self.q * (1 - self.q) / (n * (self.p - self.q)**2)
+
+    def get_mga(self, user_reports: list, m: int, T: set) -> float:
+        """
+        Compute the gain of the Maximal Gain Attack (MGA) for GRR.
+
+        Delegates to compute_mga using the GRR parameters of this instance.
+
+        Parameters
+        ----------
+        user_reports : list of int
+            True (non-obfuscated) values reported by genuine users.
+        m : int
+            Number of fake users injected by the attacker.
+        T : set
+            Set of target item indices to promote.
+
+        Returns
+        -------
+        float
+            The expected gain in estimated frequency for the target items.
+        """
+        return compute_mga(user_reports, T, m, self.p, self.q)
 
     def get_asr(self) -> float:
         """

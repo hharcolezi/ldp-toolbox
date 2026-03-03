@@ -3,7 +3,45 @@ from sys import maxsize
 import xxhash
 from ldp_toolbox.protocols.base import BaseProtocol
 from joblib import Parallel, delayed
-from numba import njit
+from numba import jit
+
+@jit(nopython=True)
+def compute_mga(user_reports: list, T: set, m: int, p: float, q: float) -> float:
+    """
+    Compute the gain of the Maximal Gain Attack (MGA) on OLH (Table 1, col. 3).
+
+    Gain = m * (r * (1 - q) - fT * (p - q)) / ((n + m) * (p - q))
+
+    where fT is the sum of true frequencies of all target items in T,
+    computed directly from the genuine users' raw reports.
+    The OLH-specific p and q (computed from epsilon and g) are passed in,
+    but the formula structure is identical to OUE.
+
+    Based on: Cao et al., "Data Poisoning Attacks to Local Differential
+    Privacy Protocols", USENIX Security 2021, Table 1.
+
+    Parameters
+    ----------
+    user_reports : list of int
+        True (non-obfuscated) values reported by genuine users.
+    T : set
+        Set of target item indices to promote.
+    m : int
+        Number of fake users injected by the attacker.
+    p : float
+        Probability of reporting the true hashed value (OLH parameter).
+    q : float
+        Probability of reporting any other hash value; equals 1/g (OLH parameter).
+
+    Returns
+    -------
+    float
+        The expected gain in estimated frequency for the target items.
+    """
+    n = len(user_reports)
+    r = len(T)
+    fT = sum(1 for v in user_reports if v in T) / n
+    return m * (r * (1 - q) - fT * (p - q)) / ((n + m) * (p - q))
 
 class LocalHashing(BaseProtocol):
     def __init__(self, k: int, epsilon: float, optimal: bool = True):
@@ -199,6 +237,28 @@ class LocalHashing(BaseProtocol):
         
         return self.q * (1 - self.q) / (n * (self.p - self.q)**2)
     
+    def get_mga(self, user_reports: list, m: int, T: set) -> float:
+        """
+        Compute the gain of the Maximal Gain Attack (MGA) for LH (BLH or OLH).
+
+        Delegates to compute_mga using the LH parameters of this instance.
+
+        Parameters
+        ----------
+        user_reports : list of int
+            True (non-obfuscated) values reported by genuine users.
+        m : int
+            Number of fake users injected by the attacker.
+        T : set
+            Set of target item indices to promote.
+
+        Returns
+        -------
+        float
+            The expected gain in estimated frequency for the target items.
+        """
+        return compute_mga(user_reports, T, m, self.p, self.q)
+
     def get_asr(self) -> float:
         """
         Compute the Adversarial Success Rate (ASR) of the LH mechanism.

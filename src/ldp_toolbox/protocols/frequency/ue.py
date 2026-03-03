@@ -87,6 +87,46 @@ def attack_ue(obfuscated_vec: np.ndarray, k: int) -> int:
             # Randomly select one of the indices where the value is '1'
             return np.random.choice(np.where(obfuscated_vec == 1)[0])
 
+def compute_mga(user_reports: list, T: set, m: int, p: float, q: float) -> float:
+    """
+    Compute the gain of the Maximal Gain Attack (MGA) on OUE (Eq. 13).
+
+    Gain = m * (r * (1 - q) - fT * (p - q)) / ((n + m) * (p - q))
+
+    Derived by substituting the correction term c into the gain formula:
+        Gain = r * m / ((n + m) * (p - q)) - c
+        c    = m * (fT * (p - q) + r * q) / ((n + m) * (p - q))
+
+    where fT is the sum of true frequencies of all target items in T,
+    computed directly from the genuine users' raw reports.
+
+    Based on: Cao et al., "Data Poisoning Attacks to Local Differential
+    Privacy Protocols", USENIX Security 2021.
+
+    Parameters
+    ----------
+    user_reports : list of int
+        True (non-obfuscated) values reported by genuine users.
+    T : set
+        Set of target item indices to promote.
+    m : int
+        Number of fake users injected by the attacker.
+    p : float
+        Probability of retaining a '1' (OUE parameter).
+    q : float
+        Probability of flipping a '0' to '1' (OUE parameter).
+
+    Returns
+    -------
+    float
+        The expected gain in estimated frequency for the target items.
+    """
+    n = len(user_reports)
+    r = len(T)
+    fT = sum(1 for v in user_reports if v in T) / n
+    return m * (r * (1 - q) - fT * (p - q)) / ((n + m) * (p - q))
+
+
 class UnaryEncoding(BaseProtocol):
     def __init__(self, k: int, epsilon: float, optimal: bool = True):
         """
@@ -110,7 +150,7 @@ class UnaryEncoding(BaseProtocol):
             raise ValueError("k must be an integer >= 2.")
         if epsilon <= 0:
             raise ValueError("epsilon must be a numerical value greater than 0.")
-        
+
         self.k = k
         self.epsilon = epsilon
         self.optimal = optimal
@@ -213,7 +253,30 @@ class UnaryEncoding(BaseProtocol):
         """
         
         return self.q * (1 - self.q) / (n * (self.p - self.q)**2)
-    
+
+    def get_mga(self, user_reports: list, m: int, T: set) -> float:
+        """
+        Compute the gain of the Maximal Gain Attack (MGA) for UE (OUE and SUE).
+
+        Delegates to compute_mga using the OUE parameters of this instance.
+
+        Parameters
+        ----------
+        user_reports : list of int
+            True (non-obfuscated) values reported by genuine users.
+        m : int
+            Number of fake users injected by the attacker.
+        T : set
+            Set of target item indices to promote.
+
+        Returns
+        -------
+        float
+            The expected gain in estimated frequency for the target items.
+
+        """
+        return compute_mga(user_reports, T, m, self.p, self.q)
+
     def get_asr(self) -> float:
         """
         Compute the Adversarial Success Rate (ASR) of the Unary Encoding (UE) mechanism.
